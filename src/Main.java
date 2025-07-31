@@ -1,4 +1,9 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+
 public class Main {
     public static void main(String[] args) {
 
@@ -26,7 +31,7 @@ public class Main {
                 /*ignore files with a starting dot and ending dot
                 only want files that have extensions like .jpg .jpeg
                  */
-                if (dotIndex > 0 && dotIndex < files.length-1){
+                if (dotIndex > 0 && dotIndex < fileName.length()-1){
                     //add the extension to a string and remove dot
                     String extension = fileName.substring(dotIndex +1).toLowerCase();
 
@@ -49,6 +54,33 @@ public class Main {
                         else {
                             System.out.println("Failed to create folder: " + category);
                         }
+                    }
+                    try {
+                        Path sourcePath = file.toPath(); //convert original file to a path object
+                        Path uniqueTarget = new File(categoryFolder,fileName).toPath(); //intended target path
+
+                        //handling duplicate filenames by appending _1,_2...
+                        int count = 1;
+
+                        while (Files.exists(uniqueTarget)){
+                            String baseName = fileName.contains(".")
+                                    ? fileName.substring(0,fileName.lastIndexOf('.'))
+                                    : fileName;
+
+                            String ext = fileName.contains(".")
+                                    ? fileName.substring(fileName.lastIndexOf('.'))
+                                    : "";
+
+                            String newFileName = baseName + "_" + count + ext;
+                            uniqueTarget = categoryFolder.toPath().resolve(newFileName);
+                            count++;
+                        }
+
+                        Files.move(sourcePath,uniqueTarget);
+                        System.out.println("Moved: " + fileName + " → " + uniqueTarget);
+                    }
+                    catch (IOException e){
+                        System.out.println("Error moving file: " + fileName);
                     }
                 }
             }
