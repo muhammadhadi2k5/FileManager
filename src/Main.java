@@ -40,6 +40,11 @@ public class Main {
             //add the extension to a string and remove dot
             String extension = fileName.substring(dotIndex +1).toLowerCase();
 
+            //prevent the main.java file from being moved to the 'others' folder
+            if (extension.equals("java")||extension.equals("class")){
+                return;
+            }
+
             //categorize the files based on their extension
             String category = getCategory(extension);
 
@@ -85,12 +90,12 @@ public class Main {
     }
     public static String getCategory(String extension){
         //categorize the files based on their extension
-        return switch (extension){
-            case "jpg","jpeg","png","gif","bmp"   -> "Images";
-            case "mp4","avi","mkv","mov","flv"    -> "Videos";
-            case "mp3","wav","ogg","flac"         -> "Audio";
-            case "pdf","docx","txt","pptx","xlsx" -> "Documents";
-            default                               -> "Others";
-        };
+            return switch (extension){
+                case "jpg","jpeg","png","gif","bmp"   -> "Images";
+                case "mp4","avi","mkv","mov","flv"    -> "Videos";
+                case "mp3","wav","ogg","flac"         -> "Audio";
+                case "pdf","docx","txt","pptx","xlsx" -> "Documents";
+                default                               -> "Others";
+            };
     }
 }
