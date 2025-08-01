@@ -41,7 +41,7 @@ public class Main {
             String extension = fileName.substring(dotIndex +1).toLowerCase();
 
             //prevent the main.java file from being moved to the 'others' folder
-            if (fileName.equals("java")||fileName.equals("class")){
+            if (extension.equals("java")||extension.equals("class")){
                 return;
             }
 
